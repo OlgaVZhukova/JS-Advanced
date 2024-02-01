@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
+    <title>Show Feedbacks</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container center">
+        <a href="addFeedback.html" class="link-main">Вернуться и добавить отзыв</a>
+        <h1 class="title">Отзывы</h1>
+        <div class="feedbacks"></div>
+    </div>
+
+    <script>
+        const listProducts = document.querySelector(".feedbacks");
+
+        for (let i = 0; i < localStorage.length; i++) {
+            let product = localStorage.key(i);
+            let feedbackSet = JSON.parse(localStorage.getItem(product));
+
+            //добавление списка продуктов
+            const divProduct = document.createElement("div");
+            listProducts.insertAdjacentElement("beforeend", divProduct);
+            divProduct.insertAdjacentHTML(
+                "beforeend",
+                `<h2>${product} <button onclick="openFeedback(this)">показать отзывы</button> </h2>`
+            );
+
+            //добавление блока для отзывов
+            const divFeedbacks = document.createElement("div");
+            divFeedbacks.hidden = true;
+            divProduct.insertAdjacentElement("beforeend", divFeedbacks);
+
+            //заполнение отзывов
+            feedbackSet.forEach((element) => {
+                const newFeedback = document.createElement("div");
+                divFeedbacks.insertAdjacentElement("beforeend", newFeedback);
+
+                const feedbackText = document.createElement("span");
+                feedbackText.textContent = element;
+                newFeedback.insertAdjacentElement("beforeend", feedbackText);
+
+                //кнопка удаления
+                newFeedback.insertAdjacentElement(
+                    "beforeend",
+                    deleteFeedbackBtn(feedbackText, feedbackSet, product)
+                );
+            });
+        }
+
+        //создание кнопки удаления отзыва
+        function deleteFeedbackBtn(textFeedback, setFeedback, product) {
+            const delBtn = document.createElement("button");
+            delBtn.textContent = "Удалить";
+
+            delBtn.addEventListener("click", () => {
+                if (setFeedback.length > 1) {
+                    let indexItem = setFeedback.findIndex(
+                        (element) => element === textFeedback.textContent
+                    );
+                    setFeedback.splice(indexItem, 1);
+                    localStorage.setItem(product, JSON.stringify(setFeedback));
+                } else {
+                    localStorage.removeItem(product);
+                    delBtn.parentElement.parentElement.parentElement.remove();
+                }
+                textFeedback.parentElement.remove();
+                delBtn.remove();
+            });
+
+            return delBtn;
+        }
+
+        //функция открытия-скрытия блока отзывов
+        function openFeedback(elem) {
+            let hiddenElement = elem.parentElement.parentElement.lastChild;
+            if (hiddenElement.hidden) {
+                hiddenElement.hidden = false;
+                elem.textContent = "скрыть отзывы";
+            } else {
+                hiddenElement.hidden = true;
+                elem.textContent = "показать отзывы";
+            }
+        }
+    </script>
+</body>
+
+</html>
