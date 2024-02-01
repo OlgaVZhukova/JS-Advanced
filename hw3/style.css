@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Merriweather', serif;
+}
+
+.center {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.container {
+    padding: 36px 0px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.feedbacks {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.add-feedback {
+    padding: 10px 16px;
+    width: 250px;
+}
+
+.error-msg {
+    color: red;
+    font-size: 20px;
+}
