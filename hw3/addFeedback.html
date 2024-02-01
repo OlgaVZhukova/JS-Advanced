@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap" rel="stylesheet">
+    <title>Add Feedback</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <form class="container center">
+        <h1 class="title">Оставьте Ваш отзыв</h1>
+        <input class="input-product" type="text" placeholder="Введите название продукта" required>
+        <textarea class="user-feedback" rows="5" placeholder="Введите Ваш отзыв" required></textarea>
+        <button class="add-feedback">Добавить отзыв</button>
+        <a href="showFeedbacks.html" class="link-feedback">Посмотреть отзывы</a>
+        <div class="error-msg"></div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productInput = document.querySelector('.input-product');
+            const feedbackInput = document.querySelector('.user-feedback');
+            const addBtn = document.querySelector('.add-feedback');
+            const errorDiv = document.querySelector('.error-msg');
+
+            addBtn.addEventListener('click', function() {
+                const product = productInput.value;
+                const feedback = feedbackInput.value;
+                console.log(product);
+                console.log(feedback);
+
+                if (product !== '' && feedback !== '') {
+                    let feedbacks = JSON.parse(localStorage.getItem(product));
+                    if (feedbacks === null) {
+                        feedbacks = [];
+                    }
+                    feedbacks.push(feedback);
+                    localStorage.setItem(product, JSON.stringify(feedbacks));
+                } else {
+                    errorDiv.textContent = 'Все поля должны быть заполнены';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
